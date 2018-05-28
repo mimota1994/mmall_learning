@@ -33,13 +33,6 @@ public class ServiceResponse<T> implements Serializable {
         this.msg=msg;
     }
 
-    public static void main(String[] args) {
-        ServiceResponse sr1 = new ServiceResponse(1,new Object());
-        ServiceResponse sr2 = new ServiceResponse(1,"abc");
-        System.out.println("console");
-
-    }
-
     @JsonIgnore
     //let it get out of json serialize result
     public boolean isSuccess(){

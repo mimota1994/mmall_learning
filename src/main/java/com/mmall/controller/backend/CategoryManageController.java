@@ -32,9 +32,9 @@ public class CategoryManageController {
     @Autowired
     private IUserService iUserService;
 
-    @RequestMapping(value = "add_category.do",method = RequestMethod.POST)
+    @RequestMapping(value = "add_category.do")
     @ResponseBody
-    public ServiceResponse<Category> addCategory(HttpSession session,String categoryName,@RequestParam(value = "parentId",defaultValue = "0")int parentId){
+    public ServiceResponse addCategory(HttpSession session,String categoryName,@RequestParam(value = "parentId",defaultValue = "0")int parentId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(iUserService.checkAdminRole(user).isSuccess()){
             return iCategoryService.addCategory(categoryName,parentId);
@@ -54,9 +54,9 @@ public class CategoryManageController {
         }
     }
 
-    @RequestMapping(value = "get_category.do",method = RequestMethod.POST)
+    @RequestMapping(value = "get_category.do")
     @ResponseBody
-    public ServiceResponse<List> getCategory(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0")int categoryId){
+    public ServiceResponse<List<Category>> getCategory(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0")int categoryId){
         User user =(User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServiceResponse.creatByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"please login first");
@@ -77,7 +77,6 @@ public class CategoryManageController {
         }
     }
 
-    private List<Integer> listAll = new ArrayList<>();
     private List<Integer> getDeep(int categoryId){
         List<Integer> list = iCategoryService.getNextLayerCategory(categoryId);
         if(list.size() == 0){

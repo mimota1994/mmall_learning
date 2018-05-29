@@ -4,7 +4,10 @@ import com.mmall.common.ServiceResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.pojo.Category;
 import com.mmall.service.ICategoryService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,13 @@ import java.util.List;
 @Service("iCategoryService")
 public class CategoryServiceImpl implements ICategoryService {
 
+    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
     @Autowired
     private CategoryMapper categoryMapper;
 
     @Override
-    public ServiceResponse<Category> addCategory(String categoryName,Integer parentId) {
+    public ServiceResponse addCategory(String categoryName,Integer parentId) {
         if(parentId == null || StringUtils.isBlank(categoryName)){
             return ServiceResponse.creatByErrorMessage("parameter error in adding category");
         }
@@ -52,10 +57,10 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ServiceResponse<List> getCategory(int categoryId) {
-        List list = categoryMapper.selectByParentId(categoryId);
-        if(list.size() == 0){
-            return ServiceResponse.creatByErrorMessage("we can not find the category");
+    public ServiceResponse<List<Category>> getCategory(int categoryId) {
+        List<Category> list = categoryMapper.selectByParentId(categoryId);
+        if(CollectionUtils.isEmpty(list)){
+            logger.info("we can not find the category");
         }
         return ServiceResponse.creatBySuccess(list);
     }

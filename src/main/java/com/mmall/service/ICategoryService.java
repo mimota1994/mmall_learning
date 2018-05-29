@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface ICategoryService {
 
-    ServiceResponse<Category> addCategory(String categoryName,Integer parentId);
+    ServiceResponse addCategory(String categoryName,Integer parentId);
 
     ServiceResponse setCategoryName(String categoryName,Integer categoryId);
 
-    ServiceResponse<List> getCategory(int categoryId);
+    ServiceResponse<List<Category>> getCategory(int categoryId);
 
     List getNextLayerCategory(int categoryId);
 }

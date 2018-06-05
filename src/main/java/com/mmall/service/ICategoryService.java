@@ -16,5 +16,5 @@ public interface ICategoryService {
 
     ServiceResponse<List<Category>> getCategory(int categoryId);
 
-    List getNextLayerCategory(int categoryId);
+    ServiceResponse<List<Integer>> selectCategoryAndChildById(Integer categoryId);
 }

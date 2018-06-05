@@ -66,31 +66,16 @@ public class CategoryManageController {
 
     @RequestMapping(value = "get_deep_category.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServiceResponse<List> getDeepCategory(HttpSession session,int categoryId){
+    public ServiceResponse<List<Integer>> getDeepCategory(HttpSession session,int categoryId){
 
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(iUserService.checkAdminRole(user).isSuccess()){
-            List list = getDeep(categoryId);
-            return ServiceResponse.creatBySuccess(list);
+            return iCategoryService.selectCategoryAndChildById(categoryId);
         }else{
             return ServiceResponse.creatByErrorMessage("no right to query");
         }
     }
 
-    private List<Integer> getDeep(int categoryId){
-        List<Integer> list = iCategoryService.getNextLayerCategory(categoryId);
-        if(list.size() == 0){
-            List<Integer> listTmp1 = new ArrayList<>();
-            listTmp1.add(categoryId);
-            return listTmp1;
-        }
-        List<Integer> listTmp2 = new ArrayList<>();
-        for(int i =0;i<list.size();i++){
-            listTmp2.addAll(getDeep(list.get(i)));
-        }
-        listTmp2.add(categoryId);
-        return listTmp2;
-    }
 
     
 
